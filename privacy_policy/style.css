@@ -1,0 +1,16 @@
+ol {
+  margin: 0;
+  padding-left: 20px; /* 필요하면 조정 */
+}
+
+li {
+  margin: 0;          /* 기본 margin 제거 */
+  line-height: 1.4;   /* 줄 간격 조절 */
+}
+
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: 1px solid black;
+}
