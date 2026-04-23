@@ -1,5 +1,11 @@
 /*
-p {
-  color: red;
-}
+   <p class="클래스name">빨간 글자색의 문단입니다.</p>
+   <p class="red yellow-bg">빨간 글자색과 노란 배경의 문단입니다.</p>
+   <p class="red fancy">빨간 글자색과 "멋진" 스타일을 가진 문단입니다.</p>
+   <p>이건 그냥 문단이에요.</p>
 */
+html {
+  font-size: 10px; 
+  font-family:
+    "Open Sans", sans-serif;
+}
