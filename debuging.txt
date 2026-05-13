@@ -1,0 +1,84 @@
+extends Control
+
+@onready var main_buttons = $MainButtons
+@onready var options_ui = $OptionsUI
+@onready var title_label = $title
+
+# 언어 버튼 경로
+@onready var language_button = $OptionsUI/MarginContainer/VBoxContainer/TabContainer/Game/LanguageRow/LanguageButton
+
+func _ready():
+	# 1. 메인 화면 초기 UI 설정
+	main_buttons.show()
+	title_label.show()
+	options_ui.hide()
+	_setup_language_menu()
+	TranslationServer.set_locale("en")
+
+func _setup_language_menu():
+	if language_button:
+		language_button.clear()
+		# 버튼에 보일 항목들 추가
+		language_button.add_item("English")             # index 0
+		language_button.add_item("Korean (can't use yet)") # index 1
+		language_button.add_item("Japanese")           # index 2
+		
+		# [설정] 게임 시작 시 기본 언어를 영어로 강제 고정
+		TranslationServer.set_locale("en")
+		language_button.select(0) 
+		
+		# 버튼 선택 시그널 연결
+		if not language_button.item_selected.is_connected(_on_option_button_item_selected):
+			language_button.item_selected.connect(_on_option_button_item_selected)
+
+# --- 메인 화면 버튼 동작 ---
+func _on_start_button_pressed():
+	get_tree().change_scene_to_file("res://node_3d.tscn")
+
+func _on_options_button_pressed():
+	main_buttons.hide()
+	title_label.hide()
+	options_ui.show()
+
+func _on_quit_button_pressed():
+	get_tree().quit()
+
+# --- 설정 화면 버튼 동작 ---
+func _on_back_button_pressed():
+	options_ui.hide()
+	main_buttons.show()
+	title_label.show()
+
+# --- 언어 변경 로직 (핵심) ---
+func _on_option_button_item_selected(index: int) -> void:
+	match index:
+		0:
+			# [해결책] 현재 언어를 초기화하듯 다시 설정
+			TranslationServer.set_locale("en")
+			
+			# UI 강제 업데이트
+			# tr()이 안 먹히면 TranslationServer를 직접 호출해서 텍스트를 꽂아줍니다.
+			$MainButtons/StartButton.text = TranslationServer.translate("BTN_START_GAME")
+			$MainButtons/OptionsButton.text = TranslationServer.translate("BTN_GAME_STTING")
+			$MainButtons/QuitButton.text = TranslationServer.translate("BTN_LEAVE_GAME")
+			
+			print("Language forced to English: ", $MainButtons/StartButton.text)
+		1:
+				# [해결책] 현재 언어를 초기화하듯 다시 설정
+			TranslationServer.set_locale("en")
+			
+			# UI 강제 업데이트
+			# tr()이 안 먹히면 TranslationServer를 직접 호출해서 텍스트를 꽂아줍니다.
+			$MainButtons/StartButton.text = TranslationServer.translate("BTN_START_GAME")
+			$MainButtons/OptionsButton.text = TranslationServer.translate("BTN_GAME_STTING")
+			$MainButtons/QuitButton.text = TranslationServer.translate("BTN_LEAVE_GAME")
+			
+			print("Language forced to English: ", $MainButtons/StartButton.text)
+		2:
+			TranslationServer.set_locale("ja")
+			# 일본어도 즉시 업데이트
+			$MainButtons/StartButton.text = TranslationServer.translate("BTN_START_GAME")
+			$MainButtons/OptionsButton.text = TranslationServer.translate("BTN_GAME_STTING")
+			$MainButtons/QuitButton.text = TranslationServer.translate("BTN_LEAVE_GAME")
+			
+			print("Language: Japanese")
